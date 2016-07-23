@@ -1,1 +1,1 @@
-# zwe-express-generator
+# generator-zwe-express
