@@ -1,0 +1,52 @@
+{
+  "name": "magicstore-server",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The application server that does all the hard work",
+  "main": "bin/www",
+  "scripts": {
+    "prestart": "npm install",
+    "deploy": "git pull",
+    "dev": "nodemon ./bin/www",
+    "eslint": "eslint .",
+    "check": "npm run eslint",
+    "pretest": "npm run prestart",
+    "test": "npm run check",
+    "test:cov": "nyc npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://zweer@bitbucket.org/magicstore/server.git"
+  },
+  "author": "Niccolò Olivieri <niccolo@olivieriachille.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/magicstore/server#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.1.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.11.1",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^5.2.2",
+    "mocha": "^2.5.3",
+    "nodemon": "^1.9.2",
+    "nyc": "^7.0.0",
+    "supertest": "^1.2.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "config": "^1.21.0",
+    "cookie-parser": "^1.4.3",
+    "epilogue": "^0.6.6",
+    "express": "^4.14.0",
+    "kue": "^0.11.1",
+    "lodash": "^4.13.1",
+    "moment": "^2.14.1",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7",
+    "request": "^2.73.0",
+    "sequelize": "^3.23.6",
+    "sqlite3": "^3.1.4",
+    "winston": "^2.2.0"
+  }
+}

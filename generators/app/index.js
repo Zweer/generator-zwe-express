@@ -1,6 +1,9 @@
+/* eslint "import/no-unresolved": 2 */
+
 'use strict';
 
 const _ = require('lodash');
+const glob = require('glob');
 const path = require('path');
 const chalk = require('chalk');
 const yosay = require('yosay');
@@ -57,7 +60,13 @@ module.exports = class Generator extends yeoman.Base {
       this.appname = this.props.newDirectory;
     }
 
-    this.sourceRoot(path.join(__dirname, 'templates'));
+    this.sourceRoot(path.join(__dirname, 'templates', 'configurations'));
+    glob.sync('**', { cwd: this.sourceRoot() })
+      .forEach((file) => {
+        this.template(file, file.replace(/^_/, ''));
+      });
+
+    this.sourceRoot(path.join(__dirname, 'templates', 'basic'));
     this.directory('.', '.');
   }
 

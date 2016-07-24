@@ -1,0 +1,99 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const http = require('http');
+
+const app = require('../app/index');
+const models = require('../app/models');
+const log = require('../app/libraries/log');
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+app.set('env', process.env.NODE_ENV || 'dev');
+
+/**
+ * Create HTTP server.
+ */
+const server = module.exports = http.createServer(app);
+
+/**
+ * Sync the database and then listen
+ */
+function afterDbSync() {
+  log.server.debug('Finished build the db');
+  server.listen(port);
+}
+
+const flushDb = process.env.FLUSH_DB === 'yes';
+
+if (models.sequelize.options.dialect === 'mysql' && flushDb) {
+  models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+    .then(() => models.sequelize.sync({ force: flushDb }))
+    .then(() => models.sequelize.query('SET FOREIGN_KEY_CHECKS = 1'))
+    .then(afterDbSync);
+} else {
+  models.sequelize.sync({ force: flushDb })
+    .then(afterDbSync);
+}
+
+/**
+ * Set callbacks
+ */
+server.on('error', (error) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      log.server.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+
+      break;
+
+    case 'EADDRINUSE':
+      log.server.error(`${bind} is already in use`);
+      process.exit(1);
+
+      break;
+
+    default:
+      throw error;
+  }
+});
+
+server.on('listening', () => {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+
+  log.server.debug(`Listening on ${bind}`);
+
+  require('../app/jobs'); // eslint-disable-line global-require
+});

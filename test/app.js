@@ -8,7 +8,19 @@ const helpers = require('yeoman-test');
 const appDirectory = path.join(__dirname, '../generators/app');
 
 const commonExpectedFiles = [
-  'dummyfile.txt',
+  '.editorconfig',
+  '.eslintrc',
+  '.gitignore',
+  'package.json',
+  'README.md',
+  'app/index.js',
+  'app/controllers/index.js',
+  'app/jobs/index.js',
+  'app/libraries/log.js',
+  'app/middlewares/index.js',
+  'app/models/index.js',
+  'app/routes/index.js',
+  'bin/www',
 ];
 
 function testFactory(name, prompts, expectedFiles) {
