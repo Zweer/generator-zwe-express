@@ -13,18 +13,12 @@ module.exports = class Generator extends yeoman.Base {
   constructor() {
     super(...arguments); // eslint-disable-line prefer-rest-params
 
-    // Add an option the allow the creation of the project in a new directory
-    this.option('createNewDirectory', {
-      type: Boolean,
-      required: false,
-      desc: 'Create the project in a new directory',
-    });
-
     // Add an option for the name of the new directory
-    this.option('newDirectory', {
+    this.option('newDirectoryName', {
       type: String,
       required: false,
-      desc: 'The name of the new directory',
+      desc: `The name of the new directory 
+      (if not specified, the project would be created in the current director)`,
     });
   }
 
@@ -34,19 +28,26 @@ module.exports = class Generator extends yeoman.Base {
     ));
   }
 
+  initializing() {
+    this.props = {
+      createNewDirectory: this.options.newDirectoryName !== undefined,
+      newDirectoryName: this.options.newDirectoryName || 'new-project',
+    };
+  }
+
   askFor() {
     const prompts = [{
       name: 'createNewDirectory',
       type: 'confirm',
       message: 'Would you like to create the project in a new directory?',
       default: false,
-      when: this.options.createNewDirectory === undefined,
+      when: this.options.newDirectoryName === undefined,
     }, {
-      name: 'newDirectory',
+      name: 'newDirectoryName',
       type: String,
       message: 'Name for the new directory',
       default: 'new-project',
-      when: this.options.newDirectory === undefined && this.options.createNewDirectory,
+      when: this.options.newDirectoryName === undefined,
     }];
 
     return this.prompt(prompts).then((props) => {
@@ -56,8 +57,8 @@ module.exports = class Generator extends yeoman.Base {
 
   writing() {
     if (this.props.createNewDirectory) {
-      this.destinationRoot(this.props.newDirectory);
-      this.appname = this.props.newDirectory;
+      this.destinationRoot(this.props.newDirectoryName);
+      this.appname = this.props.newDirectoryName;
     }
 
     this.sourceRoot(path.join(__dirname, 'templates', 'configurations'));

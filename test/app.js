@@ -6,6 +6,7 @@ const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
 const appDirectory = path.join(__dirname, '../generators/app');
+const newDirectoryName = 'temp';
 
 const commonExpectedFiles = [
   '.editorconfig',
@@ -40,8 +41,8 @@ function testFactory(name, prompts, expectedFiles) {
       if (prompts.createNewDirectory) {
         const files = fs.readdirSync(tmpDir);
 
-        assert(files.length === 1);
-        assert(files[0] === prompts.newDirectory);
+        assert.equal(files.length, 1);
+        assert.equal(files[0], prompts.newDirectoryName);
       }
 
       assert.file(expectedFiles);
@@ -54,6 +55,30 @@ describe('Zwe Express generator', () => {
 
   testFactory('creating a new directory', {
     createNewDirectory: true,
-    newDirectory: 'temp',
+    newDirectoryName,
   }, commonExpectedFiles);
+
+  describe('creating a new directory from command line', () => {
+    let tmpDir;
+
+    before(() => helpers.run(appDirectory)
+      .inTmpDir((dir) => {
+        tmpDir = dir;
+
+        return true;
+      })
+      .withOptions({
+        newDirectoryName,
+      })
+      .toPromise());
+
+    it('creates the files', () => {
+      const files = fs.readdirSync(tmpDir);
+
+      assert.equal(files.length, 1);
+      assert.equal(files[0], newDirectoryName);
+
+      assert.file(commonExpectedFiles);
+    });
+  });
 });
