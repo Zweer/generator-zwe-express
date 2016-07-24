@@ -26,7 +26,7 @@ module.exports = class Generator extends yeoman.Base {
 
   hello() {
     this.log(yosay(
-      `Welcome to the wondrous ${chalk.red('generator-zwe-express')} generator!`
+      `Welcome to the wondrous ${chalk.red('zwe-express')} generator!`
     ));
   }
 
