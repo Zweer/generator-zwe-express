@@ -5,8 +5,7 @@
   "homepage": "https://github.com/Zweer/generator-zwe-express",
   "author": {
     "name": "Niccolò Olivieri",
-    "email": "niccolo@olivieriachille.com",
-    "url": ""
+    "email": "niccolo@olivieriachille.com"
   },
   "files": [
     "generators"
