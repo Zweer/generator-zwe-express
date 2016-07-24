@@ -1,9 +1,10 @@
 'use strict';
 
 const _ = require('lodash');
-const yeoman = require('yeoman-generator');
+const path = require('path');
 const chalk = require('chalk');
 const yosay = require('yosay');
+const yeoman = require('yeoman-generator');
 
 module.exports = class Generator extends yeoman.Base {
   constructor() {
@@ -56,10 +57,8 @@ module.exports = class Generator extends yeoman.Base {
       this.appname = this.props.newDirectory;
     }
 
-    this.fs.copy(
-      this.templatePath('dummyfile.txt'),
-      this.destinationPath('dummyfile.txt')
-    );
+    this.sourceRoot(path.join(__dirname, 'templates'));
+    this.directory('.', '.');
   }
 
   install() {
