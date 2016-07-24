@@ -4,14 +4,14 @@
   "description": "My personal boilerplate for Express apps",
   "homepage": "https://github.com/Zweer/generator-zwe-express",
   "author": {
-    "name": "Niccol Olivieri <niccolo@olivieriachille.com>",
+    "name": "Niccolò Olivieri",
     "email": "niccolo@olivieriachille.com",
     "url": ""
   },
   "files": [
     "generators"
   ],
-  "main": "generators\\index.js",
+  "main": "generators/index.js",
   "keywords": [
     "yeomman-generator",
     "express",
@@ -38,13 +38,10 @@
     "gulp-nsp": "^2.1.0",
     "gulp-coveralls": "^0.1.0"
   },
-  "eslintConfig": {
-    "extends": "xo-space",
-    "env": {
-      "mocha": true
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zweer/generator-zwe-express.git"
   },
-  "repository": "https://github.com/Zweer/generator-zwe-express.git",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
